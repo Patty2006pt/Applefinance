@@ -1,43 +1,39 @@
 # Apple Stock Data Analysis & Financial Metrics (2023-2024)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-โปรเจกต์วิเคราะห์ข้อมูลทาง องการเงินและราคาหุ้นของบริษัท Apple Inc. (AAPL) ด้วยภาษา Python โดยดึงข้อมูลย้อนหลังผ่าน API เพื่อศึกษาพฤติกรรมราคา, คำนวณผลตอบแทนรายวัน (Daily Return), วัดความผันผวน, และแสดงผลในรูปแบบกราฟวิเคราะห์แนวโน้ม
+A comprehensive data science and financial analysis project using Python to pull, process, and analyze historical stock data for Apple Inc. (AAPL), comparing its performance against major market indices.
 
-## 🚀 Features
-- 📊 ดึงข้อมูลราคาหุ้นย้อนหลังแบบอัตโนมัติด้วยไลบรารี `yfinance`
-- 📈 คำนวณสถิติสำคัญ เช่น ราคาเปิด-ปิดเฉลี่ย, ราคาสูงสุด-ต่ำสุด และปริมาณการซื้อขายเฉลี่ย
-- 📉 วิเคราะห์ความเสี่ยงและผลตอบแทน (Average Return & Standard Deviation)
-- 📊 แสดงผลกราฟเชิงวิเคราะห์ 4 รูปแบบ (Closing Price Over Time, Trading Volume, Daily Returns Distribution และ Price Trend)
+🚀 Features
+📊 Downloads historical stock and market data (AAPL, S&P 500, NASDAQ Composite) via the yfinance API.   
+📈 Computes daily returns and evaluates key statistical performance metrics (Mean Return, Standard Deviation / Volatility, and Cumulative Returns).   
+📉 Analyzes financial trends and compares individual stock performance against broader market benchmarks.   
+📊 Visualizes time-series closing prices, trading volume distributions, daily return distributions, and relative cumulative growth using matplotlib.   
 
-## 🛠️ Tech Stack
-- **Language:** Python 3.9+
-- **Libraries:**
-  - `yfinance` (สำหรับดึงข้อมูลหุ้น)
-  - `pandas` & `numpy` (สำหรับการจัดการและคำนวณข้อมูลทางสถิติ)
-  - `matplotlib` (สำหรับการสร้างกราฟแสดงผล)
+🛠️ Tech StackLanguage: 
+Python 3.9+   Libraries:yfinance (Financial data retrieval)   
+pandas & numpy (Data manipulation, cleaning, and statistical calculations)   
+matplotlib (Financial charting and data visualization)   
 
-## ⚙️ Getting Started
-
-### Prerequisites
-ตรวจสอบให้แน่ใจว่าได้ติดตั้ง Python และไลบรารีที่จำเป็นแล้ว:
-```bash
+⚙️ Getting Started
+Prerequisites
+Ensure you have Python installed and run the following command to install the required libraries:
 pip install yfinance pandas numpy matplotlib
 
-Installation & Running
--โคลนโปรเจกต์นี้ หรือคัดลอกโค้ดไปรันใน Jupyter Notebook / Google Colab
--รันสคริปต์เพื่อนิดดึงข้อมูลและแสดงผลการวิเคราะห์
-python  Applefinance.py
+Installation & Execution
+1. Clone this repository or copy the code segments into your local Jupyter Notebook or Google Colab workspace.
+2. Execute the data processing script:
+   python apple_finance.py
 
 📖 Usage
-ตัวอย่างโค้ดส่วนหนึ่งในการดึงข้อมูลหุ้น Apple และคำนวณสถิติผลตอบแทนรายวัน
+Here is a core snippet demonstrating how the data is fetched and cumulative performance is calculated:
 
 import yfinance as yf
 import pandas as pd
 
-# ดาวน์โหลดข้อมูลหุ้น Apple ตั้งแต่วันที่ 2023-01-01 ถึง 2024-01-01
-df = yf.download('AAPL', start='2023-01-01', end='2024-01-01')
+# Define tickers for Apple, S&P 500, and NASDAQ Composite
+tickers = ['AAPL', '^GSPC', '^IXIC']
+df = yf.download(tickers, start='2024-01-01', end=None)['Close']
 
-# คำนวณผลตอบแทนรายวัน (Daily Return)
-df['Daily_Return'] = df['Close'].pct_change()
-print(f'ผลตอบแทนเฉลี่ย: {df["Daily_Return"].mean() * 100:.3f}%')
-print(f'ความเบี่ยงเบนมาตรฐาน (ความผันผวน): {df["Daily_Return"].std() * 100:.3f}%')
+# Calculate cumulative returns
+cumulative_returns = (df / df.iloc[0]) - 1
+print(cumulative_returns.tail())
